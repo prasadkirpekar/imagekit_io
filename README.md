@@ -3,7 +3,7 @@
 ## Usage
 
 ``` 
-  Those who love [Dio](https://pub.dev/packages/dio) and Build App for Web
+  Those who love `Dio`  and Build App for Web
 ```
 ```http
   Only ImageKit.io Private Key Required. 
