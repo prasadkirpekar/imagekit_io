@@ -3,7 +3,7 @@
 ## Usage
 
 ```http
-  Those who love Dio [ImageKit.io](https://imagekit.io/registration?code=u4su4947) and Build App for Web
+  Those who love Dio and Build App for Web
 ```
 ```http
   Only ImageKit.io Private Key Required. 
