@@ -1,6 +1,8 @@
 import 'dart:html';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:imagekit_io/imagekit_io.dart';
 
 void main() {
@@ -29,7 +31,22 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   double linearProgress = 0.0;
-  File? file;
+  Uint8List? file;
+  String? fileName;
+  Future pickImage() async {
+    try {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: FileType.image);
+      if (result == null) return;
+      final Uint8List imageTemp = result.files.first.bytes!;
+      setState(() {
+        fileName = result.files.first.name;
+        file = imageTemp;
+      });
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   /// please use File Picker or Image Picker
   @override
@@ -39,21 +56,44 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text("ImageKit.io"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            LinearProgressIndicator(value: linearProgress),
-            const Text(
-              'ImageKit.io Upload Progress',
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (file != null)
+                Card(
+                  child: Image.memory(
+                    file!,
+                    height: 200,
+                    width: double.infinity,
+                  ),
+                ),
+              Text("FileName: $fileName"),
+              const SizedBox(height: 10),
+              LinearProgressIndicator(value: linearProgress),
+              const SizedBox(height: 10),
+              const Text(
+                'ImageKit.io Upload Progress',
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  pickImage();
+                },
+                child: const Text("Select Image"),
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ImageKit.io(
             file!,
-            privateKey: "PrivateKey", // (Keep Confidential)
+            fileName: fileName!,
+            privateKey:
+                "PrivateKey", // (Keep Confidential)
             onUploadProgress: (progressValue) {
               if (kDebugMode) {
                 print(progressValue);

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -9,9 +8,10 @@ typedef OnUploadProgress = void Function(double progressValue);
 /// Add file from File Picker with `ImageKit.io` private api key.
 class ImageKit {
   static Future io(
-    File file, {
+    List<int> filePath, {
     required OnUploadProgress onUploadProgress,
     required String privateKey,
+    required String fileName,
     String? folder,
   }) async {
     String apiUrl = "https://upload.imagekit.io/api/v1/files/upload";
@@ -19,9 +19,9 @@ class ImageKit {
     String password = '';
     String basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
-    String fileName = file.name.split('/').last;
+    // String fileName = file.name.split('/').last;
     var formData = FormData.fromMap({
-      'file': await MultipartFile.fromFile(file.name, filename: fileName),
+      'file':   MultipartFile.fromBytes(filePath, filename: fileName),
       'fileName': fileName,
       'folder': folder ?? "flutter_imagekit",
     });
