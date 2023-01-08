@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:imagekit_io/imagekit_io.dart';
 
 void main() {
   runApp(const MyApp());
