@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:imagekit_io/src/model.dart';
 
 // to received image file Uploading Status during ImageKit.io() Function Call.
 typedef OnUploadProgress = void Function(double progressValue);
 
 /// Add file from File Picker with `ImageKit.io` private api key.
 class ImageKit {
-  static Future io(
+  static Future<ImagekitResponse> io(
     List<int> filePath, {
     required OnUploadProgress onUploadProgress,
     required String privateKey,
@@ -21,7 +22,7 @@ class ImageKit {
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
     // String fileName = file.name.split('/').last;
     var formData = FormData.fromMap({
-      'file':   MultipartFile.fromBytes(filePath, filename: fileName),
+      'file': MultipartFile.fromBytes(filePath, filename: fileName),
       'fileName': fileName,
       'folder': folder ?? "flutter_imagekit",
     });
@@ -35,15 +36,16 @@ class ImageKit {
           onUploadProgress(progress);
         },
       );
-      final getApi = response.data;
+      final data = ImagekitResponse.fromJson(response.data);
       if (kDebugMode) {
-        print(getApi["url"]);
+        print(data);
       }
-      return getApi;
+      return data;
     } on DioError catch (e) {
       if (kDebugMode) {
         print(e.message);
       }
     }
-  } 
+    return ImagekitResponse();
+  }
 }

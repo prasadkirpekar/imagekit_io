@@ -92,8 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ImageKit.io(
             file!,
             fileName: fileName!,
-            privateKey:
-                "PrivateKey", // (Keep Confidential)
+            privateKey: "PrivateKey", // (Keep Confidential)
             onUploadProgress: (progressValue) {
               if (kDebugMode) {
                 print(progressValue);
@@ -106,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
             /// Get your uploaded Image file link from [ImageKit.io]
             /// then save it anywhere you want. For Example- [Firebase, MongoDB] etc.
             if (kDebugMode) {
-              print(url);
+              print(url.url!);
             }
           });
         },
