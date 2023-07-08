@@ -14,6 +14,7 @@ class ImageKit {
     required String privateKey,
     required String fileName,
     String? folder,
+      bool? useUniqueFileName,
   }) async {
     String apiUrl = "https://upload.imagekit.io/api/v1/files/upload";
     String username = privateKey;
@@ -25,6 +26,7 @@ class ImageKit {
       'file': MultipartFile.fromBytes(filePath, filename: fileName),
       'fileName': fileName,
       'folder': folder ?? "flutter_imagekit",
+      'useUniqueFileName': useUniqueFileName ?? true
     });
     try {
       Response response = await Dio().post(
